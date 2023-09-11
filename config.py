@@ -225,6 +225,8 @@ def set_args():
                         help="Loss scaling to improve fp16 numeric stability. Only used when fp16 set to True.\n"
                              "0 (default value): dynamic loss scaling.\n"
                              "Positive power of 2: static loss scaling value.\n")
+    
+    parser.add_argument('--aggregator', type=str, help='Defines the aggregator function to use for GraphSAGE' )
 
     args = parser.parse_args()
     process_arguments(args)

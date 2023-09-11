@@ -16,8 +16,8 @@ from Graph.optims import Optim
 import Graph.lr_scheduler as L
 from Graph.data.data_util import *
 from Graph.models import GraphSage #GraphPointerGenerator
-from GPG.models.model_utils import compute_loss, compute_loss_2
-from GPG.data.feature import InputFeaturesQG, Example
+from Graph.model_utils import compute_loss, compute_loss_2
+from Graph.data.feature import InputFeaturesQG, Example
 
 
 class Trainer(object):
