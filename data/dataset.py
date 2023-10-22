@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 import os
 import json
 from collections import defaultdict
-from data_utils import combine_text, tokenize_text_bert, normalize_answer, no_of_topics
+from .data_utils import combine_text, tokenize_text_bert, normalize_answer, no_of_topics
 from torch.utils.data import DataLoader
 import sys
 import os
@@ -95,7 +95,7 @@ class QGDataset(Dataset):
         
         return sample
     
-    def create_dataloader(self, dataset, batch_size=16, shuffle=True):
+    def create_dataloader(self, dataset, batch_size=4, shuffle=True):
         """
         Creates a dataloader for the given dataset.
         """
@@ -113,7 +113,7 @@ class QGDataset(Dataset):
     
 dataset = QGDataset(root_dir="hotpot\\data", max_seq_length=128)
 # print(dataset.__getitem__(0)['context'])
-dataloader = dataset.create_dataloader(dataset, batch_size=32, shuffle=True)
+dataloader = dataset.create_dataloader(dataset, batch_size=4, shuffle=True)
 
-for batch in dataloader:
-    print(batch)
+# for batch in dataloader:
+#     print(batch)
