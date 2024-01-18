@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from torch_scatter import scatter_max
 import torch.nn.functional as F
+from config import Config
 
 INF = 1e12
 
@@ -144,13 +145,13 @@ class PreliminaryDecoder(nn.Module):
         embeddings
     ):
         super(PreliminaryDecoder, self).__init__()
-        device = config.device
-        self.trg_vocab_size = config.vocab_size
-        embed_size = config.emb_dim
-        dropout = config.dropout
-        num_layers = config.decoder_num_layers
-        heads = config.num_heads
-        max_length = config.max_position_embeddings
+        device = 'cuda' if torch.cuda.is_available else 'cpu' 
+        self.trg_vocab_size = config.vocab_size #
+        embed_size = config.emb_dim #
+        dropout = config.dropout #
+        num_layers = config.decoder_num_layers #
+        heads = config.num_heads #
+        max_length = config.max_position_embeddings #
         forward_expansion = config.forward_expansion
 
         if embeddings is not None:
@@ -185,16 +186,15 @@ class PreliminaryDecoder(nn.Module):
 class RefinementDecoder(nn.Module):
     def __init__(self, config, embeddings):
         super(RefinementDecoder, self).__init__()
-        self.vocab_size = config.vocab_size
-        embedding_size = config.emb_dim
-        hidden_size = config.hidden_dim * 2
-        num_layers = config.decoder_num_layers
-        dropout = config.dropout
+        self.vocab_size = config.vocab_size #
+        embedding_size = config.emb_dim #
+        hidden_size = config.hidden_dim * 2 #
+        num_layers = config.decoder_num_layers #
+        dropout = config.dropout #
 
         self.embedding = nn.Embedding(self.vocab_size, embedding_size)
         if embeddings is not None:
-            self.embedding = nn.Embedding(self.vocab_size, embedding_size). \
-                from_pretrained(embeddings, freeze=True)
+            self.embedding = nn.Embedding(self.vocab_size, embedding_size).from_pretrained(embeddings, freeze=True)
 
         if num_layers == 1:
             dropout = 0.0
@@ -250,8 +250,9 @@ class RefinementDecoder(nn.Module):
         return logit, states, context
 
 class MainDecoder(nn.Module):
-    def __init__(self, config, embeddings) -> None:
+    def __init__(self, config, embeddings=None) -> None:
         super(MainDecoder).__init__()
+        config = Config()
         self.vocab_size = config.vocab_size
         embedding_size = config.emb_dim
         hidden_size = config.hidden_dim * 2
@@ -266,7 +267,7 @@ class MainDecoder(nn.Module):
         prelim_out = self.Preliminary(x,combined_input,src_mask,trg_mask)
         logits,refined_out,context = self.Refined(x,ext_x, prev_states, prev_context, enc_out, src_mask, prelim_out)
         return logits
-
-
-
-        
+    
+if __name__ =='__main__':
+    print(MainDecoder())
+    
