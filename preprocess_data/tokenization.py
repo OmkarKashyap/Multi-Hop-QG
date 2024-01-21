@@ -65,6 +65,16 @@ def whitespace_tokenize(text):
     tokens = text.split()
     return tokens
 
+def word_tokenize(string, tokenizer_name='nltk', spacy_model=None):
+    
+    if tokenizer_name == 'nltk':
+        return [token for token in nltk.word_tokenize(string)]
+    elif tokenizer_name == 'spacy':
+        doc = nlp(string)
+        return [token.text for token in doc]
+    else:
+        raise ValueError("Invalid tokenizer_name. Use 'nltk' or 'spacy'.")
+
 
 class BertTokenizer(object):
     """Runs end-to-end tokenization: punctuation splitting + wordpiece"""
@@ -308,7 +318,7 @@ class WordpieceTokenizer(object):
 
 def _is_whitespace(char):
     """Checks whether `chars` is a whitespace character."""
-    # \t, \n, and \r are technically contorl characters but we treat them
+    # \t, \n, and \r are technically control characters but we treat them
     # as whitespace since they are generally considered as such.
     if char == " " or char == "\t" or char == "\n" or char == "\r":
         return True
@@ -344,3 +354,4 @@ def _is_punctuation(char):
     if cat.startswith("P"):
         return True
     return False
+

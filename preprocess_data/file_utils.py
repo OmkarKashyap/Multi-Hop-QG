@@ -26,6 +26,9 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 PYTORCH_PRETRAINED_BERT_CACHE = Path(os.getenv('PYTORCH_PRETRAINED_BERT_CACHE',
                                                Path.home() / '.pytorch_pretrained_bert'))
 
+def load_json(file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
 def url_to_filename(url: str, etag: str = None) -> str:
     """

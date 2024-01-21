@@ -94,6 +94,7 @@ class QGDataset(Dataset):
         }
         
         return sample
+        
     
     def create_dataloader(self, dataset, batch_size=4, shuffle=True):
         """
